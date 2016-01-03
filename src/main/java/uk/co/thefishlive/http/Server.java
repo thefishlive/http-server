@@ -8,7 +8,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import uk.co.thefishlive.http.handlers.EchoServerHandler;
+import uk.co.thefishlive.http.handlers.*;
 
 public class Server implements Runnable {
 
@@ -29,7 +29,11 @@ public class Server implements Runnable {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new EchoServerHandler());
+                            ch.pipeline().addLast(new StringDecoder());
+                            ch.pipeline().addLast(new HttpRequestDecoder());
+                            ch.pipeline().addLast(new HttpRequestHandler());
+                            ch.pipeline().addLast(new HttpResponseAdapter());
+                            ch.pipeline().addLast(new ExceptionHandler());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)

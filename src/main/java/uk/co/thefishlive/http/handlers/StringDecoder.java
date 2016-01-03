@@ -21,7 +21,7 @@ public class StringDecoder extends ByteToMessageDecoder {
                 builder = new StringBuilder();
             }
 
-            builder.append((char) in.readByte());
+            builder.append(c);
         }
 
         out.add(data);

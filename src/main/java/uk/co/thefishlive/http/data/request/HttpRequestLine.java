@@ -4,11 +4,28 @@ import uk.co.thefishlive.http.data.HttpMethod;
 import uk.co.thefishlive.http.data.HttpStartLine;
 import uk.co.thefishlive.http.data.HttpVersion;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class HttpRequestLine extends HttpStartLine {
+
+    public static final Pattern REQUEST_LINE_PATTERN = Pattern.compile("([\\S]*) ([\\S]*) ([\\S]*)");
 
     private HttpMethod method;
     private String target;
     private HttpVersion version;
+
+    public HttpRequestLine(String requestline) {
+        Matcher matcher = REQUEST_LINE_PATTERN.matcher(requestline);
+
+        if (!matcher.find()) {
+            throw new IllegalArgumentException(String.format("String (%s) is not a valid header", requestline));
+        }
+
+        this.method = HttpMethod.getMethod(matcher.group(1).trim());
+        this.target = matcher.group(2).trim();
+        this.version = HttpVersion.getVersion(matcher.group(3).trim());
+    }
 
     public HttpRequestLine(HttpMethod method, String target, HttpVersion version) {
         this.method = method;

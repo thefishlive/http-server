@@ -1,7 +1,6 @@
-package uk.co.thefishlive.http.data;
+package uk.co.thefishlive.http.data.headers;
 
-public final class HttpHeader {
-
+public class HttpHeader {
     private final String key;
     private final String value;
 

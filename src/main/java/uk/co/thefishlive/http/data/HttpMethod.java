@@ -1,5 +1,8 @@
 package uk.co.thefishlive.http.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum HttpMethod {
 
     /**
@@ -33,6 +36,17 @@ public enum HttpMethod {
     /**
      * Perform a message loop-back test along the path to the target resource.
      */
-    TRACE
+    TRACE;
 
+    private static final Map<String, HttpMethod> METHODS = new HashMap<>();
+
+    static {
+        for (HttpMethod method : values()) {
+            METHODS.put(method.name(), method);
+        }
+    }
+
+    public static HttpMethod getMethod(String method) {
+        return METHODS.get(method);
+    }
 }
