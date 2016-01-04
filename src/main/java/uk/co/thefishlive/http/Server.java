@@ -32,8 +32,8 @@ public class Server implements Runnable {
                             ch.pipeline().addLast(new StringDecoder());
                             ch.pipeline().addLast(new HttpRequestDecoder());
                             ch.pipeline().addLast(new HttpRequestHandler());
-                            ch.pipeline().addLast(new HttpResponseAdapter());
                             ch.pipeline().addLast(new ExceptionHandler());
+                            ch.pipeline().addLast(new HttpResponseAdapter());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
