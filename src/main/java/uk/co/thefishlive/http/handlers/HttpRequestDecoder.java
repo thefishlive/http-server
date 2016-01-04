@@ -21,6 +21,12 @@ public class HttpRequestDecoder extends MessageToMessageDecoder<List<String>> {
 
         for (int i = 1; i < msg.size(); i++) {
             try {
+                String header = msg.get(i);
+
+                if (header.equals("\n")) {
+                    break;
+                }
+
                 headers.addHeader(msg.get(i));
             } catch (IllegalArgumentException ex) {
                 // Swallow exception

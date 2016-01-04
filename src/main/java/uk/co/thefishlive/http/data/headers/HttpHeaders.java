@@ -40,4 +40,9 @@ public class HttpHeaders {
                 .map(entry -> new HttpHeader(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public String toString() {
+        return headers.toString();
+    }
 }

@@ -22,4 +22,11 @@ public class StringPayload implements HttpPayload {
     public String getETag() {
         return HashUtil.sha256(payload.getBytes(Charset.forName("UTF-8")));
     }
+
+    @Override
+    public String toString() {
+        return "StringPayload{" +
+                "payload='" + payload + '\'' +
+                '}';
+    }
 }

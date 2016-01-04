@@ -12,4 +12,9 @@ public class EmptyPayload implements HttpPayload {
     public String getETag() {
         return HashUtil.sha256(new byte[0]);
     }
+
+    @Override
+    public String toString() {
+        return "EmptyPayload{}";
+    }
 }

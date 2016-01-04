@@ -7,12 +7,14 @@ import uk.co.thefishlive.http.data.HttpStatusCode;
 import uk.co.thefishlive.http.data.HttpVersion;
 import uk.co.thefishlive.http.data.headers.HttpHeaders;
 import uk.co.thefishlive.http.data.payload.EmptyPayload;
+import uk.co.thefishlive.http.data.payload.FilePayload;
 import uk.co.thefishlive.http.data.payload.HttpPayload;
 import uk.co.thefishlive.http.data.payload.StringPayload;
 import uk.co.thefishlive.http.data.request.HttpRequest;
 import uk.co.thefishlive.http.data.response.HttpResponse;
 import uk.co.thefishlive.http.data.response.HttpStatusLine;
 
+import java.io.File;
 import java.util.List;
 
 public class HttpRequestHandler extends MessageToMessageDecoder<HttpRequest> {
@@ -20,7 +22,7 @@ public class HttpRequestHandler extends MessageToMessageDecoder<HttpRequest> {
     protected void decode(ChannelHandlerContext ctx, HttpRequest msg, List<Object> out) throws Exception {
         System.out.println(msg);
 
-        HttpPayload payload = new StringPayload("Hello World");
+        HttpPayload payload = new FilePayload(new File("LICENSE"));
 
         HttpHeaders headers = new HttpHeaders();
         headers.addHeader("Server", "http-server");
