@@ -1,16 +1,19 @@
 package uk.co.thefishlive.http;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import uk.co.thefishlive.http.config.ConfigManager;
+import uk.co.thefishlive.http.config.server.ServerConfigFile;
 import uk.co.thefishlive.http.handlers.*;
 
 public class Server implements Runnable {
+
+    private static final Logger logger = LogManager.getLogger();
 
     private int port;
 
@@ -29,11 +32,23 @@ public class Server implements Runnable {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new StringDecoder());
-                            ch.pipeline().addLast(new HttpRequestDecoder());
-                            ch.pipeline().addLast(new HttpRequestHandler());
-                            ch.pipeline().addLast(new ExceptionHandler());
-                            ch.pipeline().addLast(new HttpResponseAdapter());
+                            logger.info("Loading adapters");
+                            int count = 0;
+
+                            for (String adapter : ConfigManager.getConfig(ServerConfigFile.class).getAdapters()) {
+                                Class<?> clazz = Server.class.getClassLoader().loadClass(adapter);
+                                Object instance = clazz.newInstance();
+
+                                if (!(instance instanceof ChannelHandler)) {
+                                    throw new RuntimeException(String.format("Class %s is not a valid channel adapter", adapter));
+                                }
+
+                                logger.info("Loading adapter {}", adapter);
+                                ch.pipeline().addLast((ChannelHandler) instance);
+                                count++;
+                            }
+
+                            logger.info("Loaded {} adapters", count);
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
@@ -41,7 +56,7 @@ public class Server implements Runnable {
 
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(port).sync();
-            System.out.printf("Listening on port %d%n", port);
+            logger.info("Listening on port {}", port);
 
             // Wait until the server socket is closed.
             // In this example, this does not happen, but you can do that to gracefully

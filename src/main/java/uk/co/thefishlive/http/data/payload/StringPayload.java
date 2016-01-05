@@ -7,10 +7,16 @@ import java.nio.charset.Charset;
 
 public class StringPayload implements HttpPayload {
 
-    private String payload;
+    private final String contentType;
+    private final String payload;
 
     public StringPayload(String payload) {
+        this(payload, "text/plain");
+    }
+
+    public StringPayload(String payload, String contentType) {
         this.payload = payload;
+        this.contentType = contentType;
     }
 
     @Override
@@ -21,6 +27,11 @@ public class StringPayload implements HttpPayload {
     @Override
     public String getETag() {
         return HashUtil.sha256(payload.getBytes(Charset.forName("UTF-8")));
+    }
+
+    @Override
+    public String getContentType() {
+        return contentType;
     }
 
     @Override

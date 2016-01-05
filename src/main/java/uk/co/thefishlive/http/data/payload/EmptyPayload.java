@@ -14,6 +14,11 @@ public class EmptyPayload implements HttpPayload {
     }
 
     @Override
+    public String getContentType() {
+        return "text/plain";
+    }
+
+    @Override
     public String toString() {
         return "EmptyPayload{}";
     }

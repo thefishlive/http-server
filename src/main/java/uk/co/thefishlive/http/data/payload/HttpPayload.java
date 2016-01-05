@@ -8,4 +8,6 @@ public interface HttpPayload {
 
     String getETag();
 
+    String getContentType();
+
 }

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "default": "text/plain",
+  "types": {
+    "html": "text/html",
+    "xml": "text/xml",
+    "css": "text/css",
+    "json": "application/json"
+  }
+}

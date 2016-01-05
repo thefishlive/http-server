@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "server": {
+    "port": 80
+    },
+  "logging": {
+    "access": {
+      "enabled": true,
+      "file": ""
+    },
+    "error": {
+      "enabled": true,
+      "file": ""
+    }
+  },
+  "adapters": [
+    "uk.co.thefishlive.http.handlers.StringDecoder",
+    "uk.co.thefishlive.http.handlers.HttpRequestDecoder",
+    "uk.co.thefishlive.http.handlers.HttpRequestHandler",
+    "uk.co.thefishlive.http.handlers.HttpResponseAdapter",
+    "uk.co.thefishlive.http.handlers.ExceptionHandler"
+  ]
+}
